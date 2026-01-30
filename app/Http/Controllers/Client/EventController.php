@@ -42,6 +42,7 @@ class EventController extends Controller
             'venue' => 'nullable|string|max:255',
             'dress_code' => 'nullable|string|max:80',
             'message' => 'nullable|string|max:2000',
+            'maps_url' => 'nullable|string|max:600',
 
             'hero_image' => 'nullable|image|max:4096', // 4MB
             'music' => 'nullable|mimetypes:audio/mpeg,audio/mp4,audio/wav,audio/x-wav,audio/ogg|max:12288', // 12MB
@@ -59,6 +60,7 @@ class EventController extends Controller
             'dress_code' => $data['dress_code'] ?? null,
             'message' => $data['message'] ?? null,
             'music_title' => $data['music_title'] ?? $event->music_title,
+            'maps_url' => $data['maps_url'] ?? $event->maps_url,
         ]);
 
         $baseDir = 'tenants/'.$tenant->id.'/events/'.$event->id; // <- sin interpolación rara

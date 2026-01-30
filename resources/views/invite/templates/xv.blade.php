@@ -433,7 +433,7 @@
   $dress = $event->dress_code ?? 'Formal';
 
   // Opcional: maps/whats en theme JSON
-  $mapsUrl = $event->theme['maps_url'] ?? null;
+  $mapsUrl = $event->maps_url;
   $whatsUrl = $event->theme['whatsapp_url'] ?? null;
 
   $accent = $event->theme['accent'] ?? '#d9b06c';
@@ -489,7 +489,18 @@
 
       <div class="btnRow" style="justify-content:center; margin-top:16px;">
         @if($mapsUrl)
-          <button class="btn btnPrimary" id="btnMaps">Cómo llegar</button>
+          <div class="divider"></div>
+          <h2 class="cardTitle">Ubicación</h2>
+
+          <div style="border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.12)">
+            <iframe
+              src="{{ $mapsUrl }}"
+              width="100%"
+              height="260"
+              style="border:0; display:block"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
         @endif
         <button class="btn" id="btnCalendar">Agregar a calendario</button>
       </div>

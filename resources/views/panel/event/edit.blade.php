@@ -24,6 +24,11 @@
       <label>Lugar</label>
       <input name="venue" value="{{ old('venue', $event->venue) }}"/>
 
+      <label>Mapa (link de Google Maps)</label>
+      <input name="maps_url"
+             value="{{ old('maps_url', $event->maps_url) }}"
+             placeholder="https://maps.app.goo.gl/... o https://www.google.com/maps?q=..." />
+
       <label>Vestimenta</label>
       <input name="dress_code" value="{{ old('dress_code', $event->dress_code) }}"/>
 

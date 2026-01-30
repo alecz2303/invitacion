@@ -9,7 +9,7 @@ class Event extends Model
 {
     protected $fillable = [
         'tenant_id','type','title','celebrant_name','starts_at','venue',
-        'dress_code','message','theme'
+        'dress_code','message','theme','maps_url'
     ];
 
     protected $casts = [
