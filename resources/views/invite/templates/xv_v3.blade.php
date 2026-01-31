@@ -10,8 +10,8 @@
     --ink:#2a2a2a;
     --muted:#6f6f6f;
 
-    --accent: {{ $event->theme['accent'] ?? '#b59b6a' }};   /* dorado */
-    --accent2: {{ $event->theme['accent2'] ?? '#3e6b5b' }}; /* verde */
+    --accent: {{ $theme['accent'] ?? '#b59b6a' }};   /* dorado */
+    --accent2: {{ $theme['accent2'] ?? '#3e6b5b' }}; /* verde */
 
     --radius: 22px;
     --shadow: 0 18px 46px rgba(0,0,0,.10);
@@ -28,7 +28,6 @@
     background: var(--paper);
   }
   a{ color:inherit; text-decoration:none; }
-
   .wrap{ max-width:var(--max); margin:0 auto; padding:18px; }
 
   /* ===== Contenedor tipo “hoja” ===== */
@@ -93,11 +92,8 @@
     background-size: cover;
     background-position: center;
     transform: scale(1.03);
-    /* ✅ más viva y con contraste */
     filter: saturate(1.08) contrast(1.10);
   }
-
-  /* ✅ Overlay ajustado para NO lavar la foto */
   .heroOverlay{
     position:absolute;
     inset:0;
@@ -110,7 +106,6 @@
         rgba(255,255,255,0) 100%
       );
   }
-
   .heroInner{
     position:relative;
     z-index: 6;
@@ -143,20 +138,13 @@
   }
 
   /* ===== Secciones ===== */
-  .sec{
-    position:relative;
-    padding: 22px 18px;
-    text-align:center;
-    z-index: 4;
-  }
-
+  .sec{ position:relative; padding: 22px 18px; text-align:center; z-index: 4; }
   .kicker{
     letter-spacing:.28em;
     font-weight:900;
     color: color-mix(in oklab, var(--accent2) 65%, #000);
     font-size:.88rem;
   }
-
   .title{
     margin:10px 0 0;
     font-weight:950;
@@ -170,15 +158,12 @@
     font-weight:700;
     line-height:1.75;
   }
-
-  /* Nombre como imagen */
   .nameImg{
     margin: 12px auto 0;
     max-width:min(640px, 92%);
     height:auto;
     display:block;
   }
-
   .dividerImg{
     display:block;
     width:min(520px, 90%);
@@ -216,7 +201,6 @@
     margin-right:auto;
   }
   @media (max-width:860px){ .grid2{ grid-template-columns:1fr; } }
-
   .box{
     border:1px solid var(--line);
     border-radius: 18px;
@@ -280,7 +264,6 @@
     margin-right:auto;
   }
   @media (max-width:860px){ .placeGrid{ grid-template-columns:1fr; } }
-
   .placeCard{
     border:1px solid var(--line);
     border-radius: 18px;
@@ -288,11 +271,7 @@
     background:#fff;
     text-align:left;
   }
-  .placePhoto{
-    height: 170px;
-    background-size:cover;
-    background-position:center;
-  }
+  .placePhoto{ height: 170px; background-size:cover; background-position:center; }
   .placeBody{ padding: 14px; }
   .tag{
     display:inline-flex;
@@ -345,36 +324,6 @@
   .tlTime{ font-weight:950; color: var(--muted); }
   .tlTop{ display:flex; justify-content:space-between; gap:10px; }
 
-  /* Slider */
-  .slider{
-    margin-top:14px;
-    position:relative;
-    border-radius: 18px;
-    border:1px solid var(--line);
-    overflow:hidden;
-    background:#fff;
-    max-width: 900px;
-    margin-left:auto;
-    margin-right:auto;
-  }
-  .slides{ display:flex; transition: transform .25s ease; }
-  .slide{ min-width:100%; aspect-ratio: 16/10; }
-  .slide img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .navBtn{
-    position:absolute; top:50%; transform:translateY(-50%);
-    width:44px; height:44px;
-    border-radius:999px;
-    border:1px solid rgba(0,0,0,.12);
-    background: rgba(255,255,255,.92);
-    cursor:pointer;
-    font-weight:950;
-    display:grid;
-    place-items:center;
-  }
-  .navBtn.prev{ left:10px; }
-  .navBtn.next{ right:10px; }
-  @media (max-width:640px){ .navBtn{ display:none; } }
-
   /* Regalos */
   .giftGrid{
     margin-top:14px;
@@ -386,7 +335,6 @@
     margin-right:auto;
   }
   @media (max-width:860px){ .giftGrid{ grid-template-columns:1fr; } }
-
   .gift{
     border:1px solid var(--line);
     border-radius: 18px;
@@ -454,6 +402,7 @@
     font-weight:950;
   }
 
+  /* Pase */
   .passWrap{
     position:relative;
     margin-top:14px;
@@ -463,14 +412,10 @@
     border-radius: 22px;
     overflow:hidden;
     background:#fff;
-
-    /* borde + sombra premium */
     border:1px solid rgba(0,0,0,.12);
     box-shadow: 0 18px 40px rgba(0,0,0,.10);
-    }
-
-    /* marco dorado tipo foil */
-    .passWrap::before{
+  }
+  .passWrap::before{
     content:"";
     position:absolute;
     inset:0;
@@ -487,10 +432,8 @@
     opacity:.75;
     pointer-events:none;
     z-index:3;
-    }
-
-    /* sombra interna suave */
-    .passWrap::after{
+  }
+  .passWrap::after{
     content:"";
     position:absolute;
     inset:0;
@@ -499,47 +442,21 @@
                 inset 0 -30px 60px rgba(0,0,0,.12);
     pointer-events:none;
     z-index:2;
-    }
-
-    .passBg{
+  }
+  .passBg{
     position:relative;
     height: 340px;
-    background-size: contain;        /* ✅ se ve completa */
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     background-color: #fff;
-    }
-
-    /* brillo diagonal tipo “glass” */
-    .passBg::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-        radial-gradient(420px 260px at 20% 12%, rgba(255,255,255,.55), rgba(255,255,255,0) 65%),
-        linear-gradient(135deg, rgba(255,255,255,.0) 40%, rgba(255,255,255,.22) 55%, rgba(255,255,255,0) 70%);
-    opacity:.55;
-    pointer-events:none;
-    }
-
-    /* viñeta suave para enmarcar la foto */
-    .passBg::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background: radial-gradient(120% 85% at 50% 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.14) 100%);
-    opacity:.55;
-    pointer-events:none;
-    }
-
-    /* badge “TU PASE” */
-    .passBadge{
+  }
+  .passBadge{
     position:absolute;
     top:12px;
     left:50%;
     transform:translateX(-50%);
     z-index:4;
-
     display:inline-flex;
     gap:8px;
     align-items:center;
@@ -548,15 +465,12 @@
     background: rgba(255,255,255,.90);
     border:1px solid rgba(0,0,0,.12);
     box-shadow: 0 10px 20px rgba(0,0,0,.10);
-
     font-weight:950;
     letter-spacing:.18em;
     font-size:.82rem;
     color: color-mix(in oklab, var(--accent2) 65%, #000);
-    }
-
-    /* mini adorno esquinas (sutil) */
-    .passCorner{
+  }
+  .passCorner{
     position:absolute;
     width:28px;
     height:28px;
@@ -565,13 +479,11 @@
     background: linear-gradient(180deg, rgba(181,155,106,.14), rgba(255,255,255,.0));
     z-index:4;
     opacity:.9;
-    }
-    .passCorner.tl{ top:12px; left:12px; }
-    .passCorner.tr{ top:12px; right:12px; }
-    .passCorner.bl{ bottom:12px; left:12px; }
-    .passCorner.br{ bottom:12px; right:12px; }
-
-
+  }
+  .passCorner.tl{ top:12px; left:12px; }
+  .passCorner.tr{ top:12px; right:12px; }
+  .passCorner.bl{ bottom:12px; left:12px; }
+  .passCorner.br{ bottom:12px; right:12px; }
   .passBody{ padding: 14px; }
   .passWho{ font-weight:950; font-size:1.08rem; }
   .passSeats{ margin-top:6px; font-weight:900; color: var(--muted); }
@@ -588,14 +500,149 @@
     color: rgba(0,0,0,.55);
     font-weight:900;
   }
+
+  /* =========================================================
+     ✅ MODAL GALERÍA CARRUSEL FULLSCREEN
+     ========================================================= */
+  .galModal{
+    position:fixed;
+    inset:0;
+    display:none;
+    z-index: 9999;
+  }
+  .galModal.on{ display:block; }
+
+  .galBackdrop{
+    position:absolute;
+    inset:0;
+    background: rgba(0,0,0,.76);
+    backdrop-filter: blur(8px);
+  }
+
+  .galDialog{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 14px;
+  }
+
+  .galCard{
+    width: min(980px, 100%);
+    border-radius: 22px;
+    overflow:hidden;
+    background: rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow: 0 18px 60px rgba(0,0,0,.40);
+    position:relative;
+  }
+
+  .galTopBar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding: 10px 12px;
+    color:#fff;
+    font-weight:950;
+    background: rgba(0,0,0,.22);
+  }
+  .galTopBar .hint{
+    font-weight:800;
+    opacity:.9;
+    font-size:.95rem;
+  }
+
+  .galClose{
+    width:44px; height:44px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.12);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    color:#fff;
+    font-size: 1.25rem;
+    font-weight:950;
+  }
+
+  .galStage{
+    position:relative;
+    width:100%;
+    aspect-ratio: 16/10;
+    background: rgba(0,0,0,.22);
+    overflow:hidden;
+  }
+
+  .galTrack{
+    display:flex;
+    height:100%;
+    transition: transform .25s ease;
+  }
+  .galSlide{
+    min-width:100%;
+    height:100%;
+    display:grid;
+    place-items:center;
+    background: rgba(0,0,0,.35);
+  }
+  .galSlide img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+  }
+
+  .galNav{
+    position:absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width:54px;
+    height:54px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.12);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    color:#fff;
+    font-size:1.6rem;
+    font-weight:950;
+  }
+  .galNav.prev{ left:12px; }
+  .galNav.next{ right:12px; }
+  @media (max-width:640px){ .galNav{ width:46px; height:46px; } }
+
+  .galDots{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    padding: 10px 12px 12px;
+    background: rgba(0,0,0,.22);
+  }
+  .galDot{
+    width:10px; height:10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.55);
+    background: rgba(255,255,255,.20);
+    cursor:pointer;
+    opacity:.9;
+  }
+  .galDot.on{ background: rgba(255,255,255,.90); opacity:1; }
 </style>
 @endsection
 
 @section('content')
 @php
-  // ✅ MISMAS variables base
+  $asMediaUrl = function($val){
+    if(!$val) return null;
+    if(is_string($val) && preg_match('/^https?:\/\//i', $val)) return $val;
+    return asset('storage/'.$val);
+  };
+
   $quince = $event->celebrant_name ?? 'Mis XV Años';
-  $subtitle = $event->theme['subtitle'] ?? 'Prepárate para una celebración inolvidable...';
+  $subtitle = $theme['subtitle'] ?? 'Prepárate para una celebración inolvidable...';
   $message = $event->message ?? 'Junto con mis padres, quiero compartir una noche llena de sueños, alegría y gratitud.';
 
   $datePretty = optional($event->starts_at)->locale('es')->translatedFormat('j \\d\\e F \\d\\e Y');
@@ -604,17 +651,15 @@
   $venue = $event->venue ?? '—';
 
   $mapsUrl = $event->maps_url ?? null;
-  $whatsUrl = $event->theme['whatsapp_url'] ?? null;
+  $whatsUrl = $theme['whatsapp_url'] ?? null;
 
   $eventoISO = optional($event->starts_at)->toIso8601String();
 
-  $status = $invite->status; // ACTIVE | CONFIRMED | DECLINED
+  $status = $invite->status;
   $publicHash = request()->route('hash') ?? ($invite->hash_id ?? $invite->hash ?? null);
   $rsvpUrl = $publicHash ? route('invite.rsvp', ['hash' => $publicHash]) : null;
 
-  // ✅ Assets xv_358
-  $assetBase = $event->theme['asset_base_url'] ?? asset('storage/templates/xv_358/img');
-
+  $assetBase = $theme['asset_base_url'] ?? asset('storage/templates/xv_358/img');
   $imgLatIzq = $assetBase.'/latizquierdo.png';
   $imgDiv    = $assetBase.'/division.png';
   $imgDivC   = $assetBase.'/divisionclaro.png';
@@ -623,71 +668,79 @@
   $imgRecep  = $assetBase.'/recepcion.jpg';
   $imgVest   = $assetBase.'/vestimenta.png';
 
-  // ✅ HERO fuente
-  $heroFromTheme = $event->theme['hero_image_url'] ?? null;
+  $heroFromTheme = $theme['hero_image_url'] ?? null;
   $heroFromEvent = $event->hero_image_path ? asset('storage/'.$event->hero_image_path) : null;
   $heroImg = $heroFromTheme ?: $heroFromEvent;
 
-  $parents = $event->theme['parents'] ?? "Texto Texto\nTexto Texto";
-  $godparents = $event->theme['godparents'] ?? "Texto Texto\nTexto Texto";
+  $parents = $theme['parents'] ?? "Texto Texto\nTexto Texto";
+  $godparents = $theme['godparents'] ?? "Texto Texto\nTexto Texto";
 
   $dateDay = optional($event->starts_at)->format('d') ?? '--';
   $dateMon = strtoupper(optional($event->starts_at)->locale('es')->translatedFormat('M') ?? '---');
 
   $ceremony = [
-    'title' => $event->theme['ceremony_title'] ?? 'Ceremonia Religiosa',
-    'place' => $event->theme['ceremony_place'] ?? 'Parroquia',
-    'addr'  => $event->theme['ceremony_address'] ?? $venue,
-    'time'  => $event->theme['ceremony_time'] ?? $timeText,
-    'maps'  => $event->theme['ceremony_maps_url'] ?? $mapsUrl,
-    'photo' => $event->theme['ceremony_photo_url'] ?? $imgMisa,
+    'title' => $theme['ceremony_title'] ?? 'Ceremonia Religiosa',
+    'place' => $theme['ceremony_place'] ?? 'Parroquia',
+    'addr'  => $theme['ceremony_address'] ?? $venue,
+    'time'  => $theme['ceremony_time'] ?? $timeText,
+    'maps'  => $theme['ceremony_maps_url'] ?? $mapsUrl,
+    'photo' => $theme['ceremony_photo_url'] ?? $imgMisa,
   ];
 
   $reception = [
-    'title' => $event->theme['reception_title'] ?? 'Recepción',
-    'place' => $event->theme['reception_place'] ?? 'Salón',
-    'addr'  => $event->theme['reception_address'] ?? $venue,
-    'time'  => $event->theme['reception_time'] ?? $timeText,
-    'maps'  => $event->theme['reception_maps_url'] ?? $mapsUrl,
-    'photo' => $event->theme['reception_photo_url'] ?? $imgRecep,
+    'title' => $theme['reception_title'] ?? 'Recepción',
+    'place' => $theme['reception_place'] ?? 'Salón',
+    'addr'  => $theme['reception_address'] ?? $venue,
+    'time'  => $theme['reception_time'] ?? $timeText,
+    'maps'  => $theme['reception_maps_url'] ?? $mapsUrl,
+    'photo' => $theme['reception_photo_url'] ?? $imgRecep,
   ];
 
-  $quote1 = $event->theme['quote_1'] ?? 'Cada amanecer trae consigo una promesa...';
-  $quote2 = $event->theme['quote_2'] ?? 'Y hoy es el inicio de una hermosa historia por escribir...';
+  $ceremonyPhotoUrl  = $asMediaUrl($ceremony['photo']) ?: $imgMisa;
+  $receptionPhotoUrl = $asMediaUrl($reception['photo']) ?: $imgRecep;
 
-  $hashtag = $event->theme['hashtag'] ?? '#MISQUINCE';
+  $quote1 = $theme['quote_1'] ?? 'Cada amanecer trae consigo una promesa...';
+  $quote2 = $theme['quote_2'] ?? 'Y hoy es el inicio de una hermosa historia por escribir...';
 
-  $dressTitle = $event->theme['dress_title'] ?? ($event->dress_code ?? 'Guapos y Guapas');
-  $dressNote  = $event->theme['dress_note'] ?? 'Trae tu antifaz';
-  $dressWarn  = $event->theme['reserved_color_note'] ?? 'COLOR VERDE RESERVADO PARA LA QUINCEAÑERA';
-  $dressImg   = $event->theme['dress_image_url'] ?? $imgVest;
+  $hashtag = $theme['hashtag'] ?? '#MISQUINCE';
 
-  // ✅ Pase: usa hero si existe, si no fallback a pass_bg_url o a vestimenta
-  $passBg = $heroImg ?: ($event->theme['pass_bg_url'] ?? $imgVest);
+  $dressTitle = $theme['dress_title'] ?? ($event->dress_code ?? 'Guapos y Guapas');
+  $dressNote  = $theme['dress_note'] ?? 'Trae tu antifaz';
+  $dressWarn  = $theme['reserved_color_note'] ?? 'COLOR VERDE RESERVADO PARA LA QUINCEAÑERA';
+  $dressImg   = $asMediaUrl($theme['dress_image_url'] ?? null) ?: $imgVest;
 
-  $passQuote = $event->theme['pass_quote'] ?? '"El futuro pertenece a quienes creen en la belleza de sus sueños"';
+  $passBg = $heroImg ?: ($asMediaUrl($theme['pass_bg_url'] ?? null) ?: $imgVest);
+  $passQuote = $theme['pass_quote'] ?? '"El futuro pertenece a quienes creen en la belleza de sus sueños"';
 
-  $itinerary = $event->theme['itinerary'] ?? null;
+  $itinerary = $theme['itinerary'] ?? null;
   if(is_string($itinerary)){ $tmp = json_decode($itinerary, true); if(json_last_error()===JSON_ERROR_NONE) $itinerary = $tmp; }
   if(!is_array($itinerary)){
     $itinerary = [
-      ['time'=>'6:00 PM','name'=>'Ceremonia Religiosa','icon_url'=>($event->theme['ico_ceremony_url'] ?? null)],
-      ['time'=>'7:35 PM','name'=>'Recepción Bienvenida','icon_url'=>($event->theme['ico_cocktail_url'] ?? null)],
-      ['time'=>'20:30 hrs','name'=>'Fotos divertidas','icon_url'=>($event->theme['ico_social_url'] ?? null)],
-      ['time'=>'21:00 hrs','name'=>'Cena a 3 Tiempos','icon_url'=>($event->theme['ico_dinner_url'] ?? null)],
-      ['time'=>'22:00 hrs','name'=>'Baile sorpresa','icon_url'=>($event->theme['ico_social2_url'] ?? null)],
-      ['time'=>'22:30 hrs','name'=>'¡Queremos pastel!','icon_url'=>($event->theme['ico_cake_url'] ?? null)],
-      ['time'=>'23:00 hrs','name'=>'¡A bailar!','icon_url'=>($event->theme['ico_party_url'] ?? null)],
+      ['time'=>'6:00 PM','name'=>'Ceremonia Religiosa','icon_url'=>($theme['ico_ceremony_url'] ?? null)],
+      ['time'=>'7:35 PM','name'=>'Recepción Bienvenida','icon_url'=>($theme['ico_cocktail_url'] ?? null)],
+      ['time'=>'20:30 hrs','name'=>'Fotos divertidas','icon_url'=>($theme['ico_social_url'] ?? null)],
+      ['time'=>'21:00 hrs','name'=>'Cena a 3 Tiempos','icon_url'=>($theme['ico_dinner_url'] ?? null)],
+      ['time'=>'22:00 hrs','name'=>'Baile sorpresa','icon_url'=>($theme['ico_social2_url'] ?? null)],
+      ['time'=>'22:30 hrs','name'=>'¡Queremos pastel!','icon_url'=>($theme['ico_cake_url'] ?? null)],
+      ['time'=>'23:00 hrs','name'=>'¡A bailar!','icon_url'=>($theme['ico_party_url'] ?? null)],
     ];
   }
 
-  $gifts = $event->theme['gifts'] ?? null;
+  $gifts = $theme['gifts'] ?? null;
   if(is_string($gifts)){ $tmp = json_decode($gifts, true); if(json_last_error()===JSON_ERROR_NONE) $gifts = $tmp; }
   if(!is_array($gifts)){
     $gifts = [
-      ['title'=>'Mesa de Regalos','code'=>'Num. 00000','url'=>null,'icon_url'=>($event->theme['gift1_icon_url'] ?? null),'btn'=>'VER'],
-      ['title'=>'Lluvia de Sobres','code'=>'El día del evento','url'=>null,'icon_url'=>($event->theme['gift2_icon_url'] ?? null),'btn'=>'VER'],
+      ['title'=>'Mesa de Regalos','code'=>'Num. 00000','url'=>null,'icon_url'=>($theme['gift1_icon_url'] ?? null),'btn'=>'VER'],
+      ['title'=>'Lluvia de Sobres','code'=>'El día del evento','url'=>null,'icon_url'=>($theme['gift2_icon_url'] ?? null),'btn'=>'VER'],
     ];
+  }
+
+  // ✅ Galería (hasta 12)
+  $galleryPhotos = [];
+  if($event->photos && $event->photos->count()){
+    foreach($event->photos->take(12) as $p){
+      $galleryPhotos[] = asset('storage/'.$p->path);
+    }
   }
 @endphp
 
@@ -732,9 +785,7 @@
     {{-- INVITAN --}}
     <section class="sec reveal" id="invitan">
       <h2 class="title" style="font-size:1.6rem;">¡Te invitamos a celebrar!</h2>
-
       <img class="dividerImg" src="{{ $imgDiv }}" alt="" aria-hidden="true">
-
       <div class="sub">{{ $message }}</div>
 
       <div class="grid2">
@@ -752,7 +803,6 @@
     {{-- APARTA LA FECHA --}}
     <section class="sec reveal" id="fecha">
       <h2 class="title" style="font-size:1.6rem;">Aparta la fecha</h2>
-
       <img class="dividerImg" src="{{ $imgDiv }}" alt="" aria-hidden="true">
 
       <div class="dateBadge">
@@ -775,12 +825,11 @@
     {{-- CUANDO Y DONDE --}}
     <section class="sec reveal" id="cuando-donde">
       <h2 class="title" style="font-size:1.6rem;">¿Cuándo y dónde?</h2>
-
       <img class="dividerImg" src="{{ $imgDiv }}" alt="" aria-hidden="true">
 
       <div class="placeGrid">
         <div class="placeCard">
-          <div class="placePhoto" style="background-image:url('{{ $ceremony['photo'] }}');"></div>
+          <div class="placePhoto" style="background-image:url('{{ $ceremonyPhotoUrl }}');"></div>
           <div class="placeBody">
             <div class="tag">INICIAMOS CON LA</div>
             <div class="placeTitle">{{ $ceremony['title'] }}</div>
@@ -795,7 +844,7 @@
         </div>
 
         <div class="placeCard">
-          <div class="placePhoto" style="background-image:url('{{ $reception['photo'] }}');"></div>
+          <div class="placePhoto" style="background-image:url('{{ $receptionPhotoUrl }}');"></div>
           <div class="placeBody">
             <div class="tag">CONTINUAMOS CON LA</div>
             <div class="placeTitle">{{ $reception['title'] }}</div>
@@ -819,7 +868,6 @@
     {{-- ITINERARIO --}}
     <section class="sec reveal" id="itinerario">
       <h2 class="title" style="font-size:1.6rem;">Itinerario</h2>
-
       <img class="dividerImg" src="{{ $imgDivC }}" alt="" aria-hidden="true">
 
       <div class="tl">
@@ -843,29 +891,55 @@
       </div>
     </section>
 
-    {{-- GALERÍA --}}
-    @if($event->photos && $event->photos->count())
+    {{-- ✅ FOTOS (1 solo botón) --}}
+    @if(!empty($galleryPhotos))
     <section class="sec reveal" id="fotos">
       <h2 class="title" style="font-size:1.6rem;">Fotos</h2>
+      <img class="dividerImg" src="{{ $imgDivC }}" alt="" aria-hidden="true">
 
-      <div class="slider" data-slider>
-        <div class="slides" data-slides>
-          @foreach($event->photos->take(12) as $p)
-            <div class="slide">
-              <img src="{{ asset('storage/'.$p->path) }}" alt="Foto" loading="lazy">
-            </div>
-          @endforeach
-        </div>
-        <button class="navBtn prev" type="button" data-prev aria-label="Anterior">‹</button>
-        <button class="navBtn next" type="button" data-next aria-label="Siguiente">›</button>
+      <div class="sub">Tenemos {{ count($galleryPhotos) }} fotos para ti ✨</div>
+
+      <div class="btnRow">
+        <button class="btn gold" type="button" id="openGalleryBtn">📸 VER FOTOS</button>
       </div>
     </section>
+
+    {{-- ✅ MODAL CARRUSEL --}}
+    <div class="galModal" id="galModal" aria-hidden="true">
+      <div class="galBackdrop" data-gal-close></div>
+      <div class="galDialog" role="dialog" aria-modal="true" aria-label="Galería de fotos">
+        <div class="galCard">
+          <div class="galTopBar">
+            <div class="hint" id="galCounter">Foto 1 de {{ count($galleryPhotos) }}</div>
+            <button class="galClose" type="button" data-gal-close aria-label="Cerrar">✕</button>
+          </div>
+
+          <div class="galStage" id="galStage">
+            <div class="galTrack" id="galTrack">
+              @foreach($galleryPhotos as $u)
+                <div class="galSlide">
+                  <img src="{{ $u }}" alt="Foto" loading="lazy">
+                </div>
+              @endforeach
+            </div>
+
+            <button class="galNav prev" type="button" data-gal-prev aria-label="Anterior">‹</button>
+            <button class="galNav next" type="button" data-gal-next aria-label="Siguiente">›</button>
+          </div>
+
+          <div class="galDots" id="galDots">
+            @foreach($galleryPhotos as $idx => $u)
+              <button type="button" class="galDot" data-gal-dot="{{ $idx }}" aria-label="Ir a foto {{ $idx+1 }}"></button>
+            @endforeach
+          </div>
+        </div>
+      </div>
+    </div>
     @endif
 
     {{-- REGALOS + HASHTAG --}}
     <section class="sec reveal" id="regalos">
       <h2 class="title" style="font-size:1.6rem;">Mesa de regalos</h2>
-
       <img class="dividerImg" src="{{ $imgDiv }}" alt="" aria-hidden="true">
 
       <div class="giftGrid">
@@ -950,7 +1024,15 @@
       <h2 class="title" style="font-size:1.6rem;">¡Tu pase!</h2>
 
       <div class="passWrap">
+        <div class="passBadge">TU PASE</div>
+
+        <span class="passCorner tl" aria-hidden="true"></span>
+        <span class="passCorner tr" aria-hidden="true"></span>
+        <span class="passCorner bl" aria-hidden="true"></span>
+        <span class="passCorner br" aria-hidden="true"></span>
+
         <div class="passBg" style="background-image:url('{{ $passBg }}');"></div>
+
         <div class="passBody">
           <div class="passWho">{{ $invite->guest_name }}</div>
           <div class="passSeats">Pase para <strong>{{ $invite->seats }}</strong> Personas</div>
@@ -970,7 +1052,6 @@
 
 @section('scripts')
 <script>
-  // ✅ Evitar duplicidad: fallback solo si el layout NO lo trae.
   if (typeof window.qs !== 'function') {
     window.qs = function(id){ return document.getElementById(id); };
   }
@@ -1020,45 +1101,8 @@
     els.forEach(el=>io.observe(el));
   })();
 
-  // ===== Slider =====
-  (function(){
-    const slider = document.querySelector('[data-slider]');
-    if(!slider) return;
-    const track = slider.querySelector('[data-slides]');
-    if(!track) return;
-    const slides = Array.from(track.children);
-    if(slides.length <= 1) return;
-
-    const prev = slider.querySelector('[data-prev]');
-    const next = slider.querySelector('[data-next]');
-    let index = 0;
-
-    function render(){ track.style.transform = `translateX(${-index * 100}%)`; }
-    function go(dir){ index = (index + dir + slides.length) % slides.length; render(); }
-
-    if(prev) prev.addEventListener('click', ()=>go(-1));
-    if(next) next.addEventListener('click', ()=>go(1));
-
-    let startX=0;
-    slider.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; }, {passive:true});
-    slider.addEventListener('touchend', (e)=>{
-      const dx = e.changedTouches[0].clientX - startX;
-      if(Math.abs(dx)>40) go(dx < 0 ? 1 : -1);
-    }, {passive:true});
-
-    render();
-  })();
-
   // ===== RSVP =====
   const csrf = @json(csrf_token());
-
-  if (!window.RSVP_URL) {
-    console.warn('RSVP_URL missing');
-    const yes = document.getElementById('btnYes');
-    const no  = document.getElementById('btnNo');
-    if (yes) yes.disabled = true;
-    if (no)  no.disabled = true;
-  }
 
   async function postRSVP(resp){
     const res = await fetch(window.RSVP_URL, {
@@ -1103,5 +1147,94 @@
       no.disabled = false; if(yes) yes.disabled = false;
     }
   });
+
+  // =========================================================
+  // ✅ MODAL GALERÍA (1 botón) + carrusel fullscreen
+  // =========================================================
+  (function(){
+    const photos = @json($galleryPhotos ?? []);
+    if(!photos || !photos.length) return;
+
+    const modal = document.getElementById('galModal');
+    const track = document.getElementById('galTrack');
+    const dotsWrap = document.getElementById('galDots');
+    const counter = document.getElementById('galCounter');
+    const stage = document.getElementById('galStage');
+    const btnOpen = document.getElementById('openGalleryBtn');
+
+    let index = 0;
+    let startX = 0;
+
+    function lockScroll(on){
+      document.documentElement.style.overflow = on ? 'hidden' : '';
+      document.body.style.overflow = on ? 'hidden' : '';
+    }
+
+    function open(){
+      if(!modal) return;
+      modal.classList.add('on');
+      modal.setAttribute('aria-hidden','false');
+      lockScroll(true);
+      render();
+    }
+
+    function close(){
+      if(!modal) return;
+      modal.classList.remove('on');
+      modal.setAttribute('aria-hidden','true');
+      lockScroll(false);
+    }
+
+    function render(){
+      if(track) track.style.transform = `translateX(${-index * 100}%)`;
+      if(counter) counter.textContent = `Foto ${index+1} de ${photos.length}`;
+      if(dotsWrap){
+        const dots = dotsWrap.querySelectorAll('.galDot');
+        dots.forEach((d,i)=> d.classList.toggle('on', i===index));
+      }
+    }
+
+    function go(i){
+      index = (i + photos.length) % photos.length;
+      render();
+    }
+    function next(){ go(index+1); }
+    function prev(){ go(index-1); }
+
+    if(btnOpen) btnOpen.addEventListener('click', ()=>{ index = 0; open(); });
+
+    modal?.querySelectorAll('[data-gal-close]').forEach(el=>{
+      el.addEventListener('click', close);
+    });
+
+    modal?.querySelector('[data-gal-next]')?.addEventListener('click', next);
+    modal?.querySelector('[data-gal-prev]')?.addEventListener('click', prev);
+
+    if(dotsWrap){
+      dotsWrap.querySelectorAll('[data-gal-dot]').forEach(d=>{
+        d.addEventListener('click', ()=>{
+          const i = parseInt(d.getAttribute('data-gal-dot') || '0', 10);
+          go(i);
+        });
+      });
+    }
+
+    if(stage){
+      stage.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; }, {passive:true});
+      stage.addEventListener('touchend', (e)=>{
+        const dx = e.changedTouches[0].clientX - startX;
+        if(Math.abs(dx) > 40){
+          dx < 0 ? next() : prev();
+        }
+      }, {passive:true});
+    }
+
+    document.addEventListener('keydown', (e)=>{
+      if(!modal || !modal.classList.contains('on')) return;
+      if(e.key === 'Escape') close();
+      if(e.key === 'ArrowRight') next();
+      if(e.key === 'ArrowLeft') prev();
+    });
+  })();
 </script>
 @endsection

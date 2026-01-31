@@ -16,6 +16,7 @@ Route::get('/i/{hash}', [InvitePublicController::class, 'show'])->name('invite.s
 Route::post('/i/{hash}/rsvp', [InvitePublicController::class, 'rsvp'])
     ->middleware('throttle:30,1')
     ->name('invite.rsvp');
+Route::get('/invite/{hash}/ics', [InvitePublicController::class, 'ics'])->name('invite.ics');
 
 // ===== Admin (tú) =====
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
