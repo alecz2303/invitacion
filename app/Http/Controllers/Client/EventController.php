@@ -40,31 +40,25 @@ class EventController extends Controller
         $v = trim($value);
         if ($v === '') return '';
 
-        // Si ya es URL válida, la regresamos tal cual
         if (filter_var($v, FILTER_VALIDATE_URL)) {
             return $v;
         }
 
-        // Quitar espacios
         $vNoSpaces = preg_replace('/\s+/', '', $v);
 
-        // wa.me sin esquema
         if (preg_match('#^wa\.me/#i', $vNoSpaces)) {
             return 'https://' . $vNoSpaces;
         }
 
-        // api.whatsapp.com sin esquema (raro, pero por si acaso)
         if (preg_match('#^api\.whatsapp\.com/#i', $vNoSpaces)) {
             return 'https://' . $vNoSpaces;
         }
 
-        // Si parece teléfono (solo dígitos, 7-16 dígitos)
         $digits = preg_replace('/\D+/', '', $vNoSpaces);
         if ($digits !== '' && preg_match('/^\d{7,16}$/', $digits)) {
             return 'https://wa.me/' . $digits;
         }
 
-        // Si no pudo normalizar, lo dejamos igual (para que el validador lo marque)
         return $v;
     }
 
@@ -92,7 +86,7 @@ class EventController extends Controller
 
         $type    = $event->type ?? 'xv';
         $schema  = Theme::schema($type);
-        $allowed = Theme::allowedKeys($type); // Asegúrate que existe en Theme.php
+        $allowed = Theme::allowedKeys($type);
 
         $baseDir = 'tenants/' . $tenant->id . '/events/' . $event->id;
 
@@ -121,19 +115,22 @@ class EventController extends Controller
             // Uploads de theme
             'theme_files' => 'nullable|array',
             'theme_remove' => 'nullable|array',
+
+            // Para preservar pestañas al guardar
+            '_tab' => 'nullable|string|max:50',
+            '_theme_tab' => 'nullable|string|max:60',
         ];
 
-        // Para cada key tipo image en el schema, permite file + remove
         foreach ($schema as $key => $meta) {
             $t = $meta['type'] ?? 'string';
             if ($t === 'image') {
-                $rules["theme_files.$key"]  = 'nullable|image|max:4096'; // 4MB
+                $rules["theme_files.$key"]  = 'nullable|image|max:4096';
                 $rules["theme_remove.$key"] = 'nullable|boolean';
             }
         }
 
-        // Validamos todo lo del theme en un solo validate
-        $validatedTheme = $request->validate($rules);
+        // Valida todo lo anterior
+        $request->validate($rules);
 
         /**
          * =========================================================
@@ -143,7 +140,6 @@ class EventController extends Controller
         $incomingTheme = (array) $request->input('theme', []);
         $incomingTheme = Arr::only($incomingTheme, $allowed);
 
-        // Trim de strings (sin tocar arrays)
         foreach ($incomingTheme as $k => $v) {
             if (is_string($v)) $incomingTheme[$k] = trim($v);
         }
@@ -184,21 +180,17 @@ class EventController extends Controller
         /**
          * =========================================================
          * 4) Validaciones por schema (color/json/url)
-         *     - URL: solo si schema dice 'url' (o si quieres forzar algunos string)
-         *     - JSON: solo si schema dice 'json' y el valor ES string (aquí ya casi no lo usas)
          * =========================================================
          */
         foreach ($incomingTheme as $k => $v) {
             $t = $schema[$k]['type'] ?? 'string';
 
-            // color
             if ($t === 'color' && is_string($v) && $v !== '') {
                 if (!preg_match('/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $v)) {
                     return back()->withErrors(["theme.$k" => "Color inválido en $k (usa #RGB o #RRGGBB)"])->withInput();
                 }
             }
 
-            // json (solo si te siguen llegando strings json en algún campo)
             if ($t === 'json' && is_string($v) && $v !== '') {
                 json_decode($v, true);
                 if (json_last_error() !== JSON_ERROR_NONE) {
@@ -206,7 +198,6 @@ class EventController extends Controller
                 }
             }
 
-            // url (si todavía tienes campos url en schema)
             if ($t === 'url' && is_string($v) && $v !== '') {
                 if (!filter_var($v, FILTER_VALIDATE_URL)) {
                     return back()->withErrors(["theme.$k" => "URL inválida en $k"])->withInput();
@@ -217,18 +208,13 @@ class EventController extends Controller
         /**
          * =========================================================
          * 5) Procesar uploads y removals de imágenes del theme
-         *    Inputs esperados:
-         *      - theme_files[key] (file)
-         *      - theme_remove[key] (1)
          * =========================================================
          */
         $themeFiles  = (array) $request->file('theme_files', []);
         $themeRemove = (array) $request->input('theme_remove', []);
 
-        // Partimos del theme actual
         $resolvedTheme = $event->theme ?? [];
 
-        // helper local para detectar URL
         $isUrl = function ($val) {
             return is_string($val) && (bool) filter_var($val, FILTER_VALIDATE_URL);
         };
@@ -239,7 +225,6 @@ class EventController extends Controller
             $t = $meta['type'] ?? 'string';
             if ($t !== 'image') continue;
 
-            // remove?
             if (!empty($themeRemove[$key])) {
                 if (!empty($resolvedTheme[$key]) && !$isUrl($resolvedTheme[$key])) {
                     Storage::disk('public')->delete($resolvedTheme[$key]);
@@ -247,9 +232,7 @@ class EventController extends Controller
                 $resolvedTheme[$key] = null;
             }
 
-            // upload?
             if (!empty($themeFiles[$key])) {
-                // borra anterior si era local
                 if (!empty($resolvedTheme[$key]) && !$isUrl($resolvedTheme[$key])) {
                     Storage::disk('public')->delete($resolvedTheme[$key]);
                 }
@@ -261,7 +244,7 @@ class EventController extends Controller
 
         /**
          * =========================================================
-         * 6) Merge final del theme (una sola vez)
+         * 6) Merge final del theme
          * =========================================================
          */
         $event->theme = array_replace_recursive($resolvedTheme, $incomingTheme);
@@ -278,10 +261,12 @@ class EventController extends Controller
             'venue' => 'nullable|string|max:255',
             'dress_code' => 'nullable|string|max:80',
             'message' => 'nullable|string|max:2000',
-            'maps_url' => 'nullable|string|max:600',
 
-            'hero_image' => 'nullable|image|max:4096', // 4MB
-            'music' => 'nullable|mimetypes:audio/mpeg,audio/mp4,audio/wav,audio/x-wav,audio/ogg|max:12288', // 12MB
+            // ✅ recomendado: url real
+            'maps_url' => 'nullable|url|max:600',
+
+            'hero_image' => 'nullable|image|max:4096',
+            'music' => 'nullable|mimetypes:audio/mpeg,audio/mp4,audio/wav,audio/x-wav,audio/ogg|max:12288',
             'music_title' => 'nullable|string|max:255',
             'remove_music' => 'nullable|boolean',
             'remove_hero' => 'nullable|boolean',
@@ -356,9 +341,12 @@ class EventController extends Controller
          */
         $event->save();
 
-        return back()->with('status', 'Evento actualizado.');
+        // ✅ Regresar conservando la pestaña activa
+        return redirect()->route('panel.event.edit', [
+            'tab' => $request->input('_tab', 'evento'),
+            'theme_tab' => $request->input('_theme_tab'),
+        ])->with('status', 'Evento actualizado ✅');
     }
-
 
     public function addPhotos(Request $request)
     {
@@ -370,7 +358,6 @@ class EventController extends Controller
             'photos.*' => 'image|max:4096',
         ]);
 
-        // Limitar a 12
         $currentCount = $event->photos()->count();
         $incoming = count($request->file('photos', []));
         abort_if($currentCount + $incoming > 12, 422, 'Máximo 12 fotos en la galería.');
@@ -387,7 +374,9 @@ class EventController extends Controller
             ]);
         }
 
-        return back()->with('status', 'Fotos agregadas a la galería.');
+        // ✅ volver a la pestaña de galería
+        return redirect()->route('panel.event.edit', ['tab' => 'gallery'])
+            ->with('status', 'Fotos agregadas a la galería ✅');
     }
 
     public function deletePhoto(Request $request, EventPhoto $photo)
@@ -399,6 +388,8 @@ class EventController extends Controller
         Storage::disk('public')->delete($photo->path);
         $photo->delete();
 
-        return back()->with('status', 'Foto eliminada.');
+        // ✅ volver a la pestaña de galería
+        return redirect()->route('panel.event.edit', ['tab' => 'gallery'])
+            ->with('status', 'Foto eliminada ✅');
     }
 }

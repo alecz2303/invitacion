@@ -1,8 +1,8 @@
 @extends('layouts.app-simple')
 
-@section('title','Panel · Nuevo invitado')
+@section('title','Panel · Editar invitado')
 @section('h1','Panel')
-@section('subtitle','Crear invitado')
+@section('subtitle','Editar invitado')
 
 @section('content')
 @php
@@ -16,14 +16,15 @@
 
 <div class="mx-auto max-w-3xl">
   <div class="{{ $card }}">
-    <form method="POST" action="{{ route('panel.invites.store') }}" class="space-y-4">
+    <form method="POST" action="{{ route('panel.invites.update', $invite) }}" class="space-y-4">
       @csrf
+      @method('PUT')
 
       <div>
         <label class="{{ $label }}">Evento</label>
         <select name="event_id" class="{{ $input }}">
           @foreach($events as $ev)
-            <option value="{{ $ev->id }}" @selected(old('event_id')==$ev->id)>
+            <option value="{{ $ev->id }}" @selected(old('event_id', $invite->event_id)==$ev->id)>
               {{ $ev->title }} ({{ $ev->starts_at?->format('Y-m-d H:i') }})
             </option>
           @endforeach
@@ -32,17 +33,26 @@
 
       <div>
         <label class="{{ $label }}">Nombre del invitado</label>
-        <input name="guest_name" value="{{ old('guest_name') }}" placeholder="Familia Rueda" class="{{ $input }}" />
+        <input name="guest_name" value="{{ old('guest_name', $invite->guest_name) }}" class="{{ $input }}" />
       </div>
 
       <div>
         <label class="{{ $label }}">Lugares asignados</label>
-        <input type="number" name="seats" min="1" max="20" value="{{ old('seats', 2) }}" class="{{ $input }}" />
+        <input type="number" name="seats" min="1" max="20" value="{{ old('seats', $invite->seats) }}" class="{{ $input }}" />
+      </div>
+
+      <div>
+        <label class="{{ $label }}">Estado</label>
+        <select name="status" class="{{ $input }}">
+          <option value="ACTIVE" @selected(old('status',$invite->status)==='ACTIVE')>🟡 Pendiente</option>
+          <option value="CONFIRMED" @selected(old('status',$invite->status)==='CONFIRMED')>✅ Confirmado</option>
+          <option value="DECLINED" @selected(old('status',$invite->status)==='DECLINED')>❌ Declinó</option>
+        </select>
       </div>
 
       <div class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center pt-2">
         <a class="{{ $btnSoft }}" href="{{ route('panel.invites.index') }}">← Volver</a>
-        <button class="{{ $btnPrimary }}" type="submit">Guardar</button>
+        <button class="{{ $btnPrimary }}" type="submit">Guardar cambios</button>
       </div>
     </form>
   </div>

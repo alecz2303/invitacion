@@ -14,8 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(ResolveTenantFromSubdomain::class);
         $middleware->alias([
+            'tenant' => \App\Http\Middleware\ResolveTenantFromSubdomain::class,
             'admin' => \App\Http\Middleware\RequireAdmin::class,
             'client' => \App\Http\Middleware\RequireClient::class,
+            'admin.host' => \App\Http\Middleware\RequireAdminHost::class,
+            'tenant.match' => \App\Http\Middleware\RequireTenantMatchUser::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -11,6 +11,41 @@ use App\Support\Theme;
 
 class InvitePublicController extends Controller
 {
+    public function demo(\Illuminate\Http\Request $request)
+    {
+        $tenant = app('tenant');
+        abort_if(!$tenant, 404);
+
+        $event = \App\Models\Event::where('tenant_id', $tenant->id)->latest()->firstOrFail();
+
+        // ✅ Invite "fake" con la misma forma que espera el blade
+        $invite = (object) [
+            'id' => 0,
+            'guest_name' => 'Invitado de Muestra',
+            'seats' => 2,
+            'status' => 'ACTIVE',
+
+            // 👇 Esto es lo que te faltaba
+            'event' => $event,
+
+            // Por si en tu blade usa $invite->event_id
+            'event_id' => $event->id,
+        ];
+
+        $type  = $event->type ?? 'xv';
+        $theme = \App\Support\Theme::resolve($type, $event->theme);
+        $hash = 'demo';
+
+        // fallback por si no existe la vista
+        $view = view()->exists("invite.templates.$type")
+            ? "invite.templates.$type"
+            : "invite.templates.xv";
+
+        return view($view, compact('tenant', 'event', 'invite', 'theme', 'type', 'hash'))
+            ->with('isDemo', true);
+    }
+
+
     public function show(Request $request, string $hash)
     {
         $tenant = app('tenant');

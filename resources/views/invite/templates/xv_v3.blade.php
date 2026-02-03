@@ -501,25 +501,79 @@
     font-weight:900;
   }
 
-  /* =========================================================
-     ✅ MODAL GALERÍA CARRUSEL FULLSCREEN
-     ========================================================= */
-  .galModal{
-    position:fixed;
+  /* =========================
+     GALERÍA (igual a tu HTML)
+     ========================= */
+
+  .gallery-btn{
+    width: min(560px, 92%);
+    margin: 12px auto 0;
+    border: 1px solid rgba(0,0,0,.14);
+    border-radius: 22px;
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    box-shadow: 0 18px 40px rgba(0,0,0,.10);
+  }
+
+  .gallery-btn__bg{
+    position:absolute;
     inset:0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px) saturate(1.05);
+    transform: scale(1.08);
+    opacity: .95;
+  }
+
+  .gallery-btn::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(to top, rgba(0,0,0,.48), rgba(0,0,0,.10));
+  }
+
+  .gallery-btn__content{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding: 18px 18px;
+    color:#fff;
+    text-align:left;
+  }
+
+  .gallery-btn__title{
+    font-weight: 950;
+    font-size: 1.15rem;
+    letter-spacing: .02em;
+  }
+
+  .gallery-btn__meta{
+    font-weight: 800;
+    opacity: .92;
+  }
+
+  /* ===== MODAL (igual a tu HTML) ===== */
+  .modal{
+    position: fixed;
+    inset: 0;
     display:none;
     z-index: 9999;
   }
-  .galModal.on{ display:block; }
+  .modal.on{ display:block; }
 
-  .galBackdrop{
+  .modal-backdrop{
     position:absolute;
     inset:0;
-    background: rgba(0,0,0,.76);
+    background: rgba(0,0,0,.82);
     backdrop-filter: blur(8px);
   }
 
-  .galDialog{
+  .modal-content{
     position:absolute;
     inset:0;
     display:flex;
@@ -528,34 +582,23 @@
     padding: 14px;
   }
 
-  .galCard{
-    width: min(980px, 100%);
-    border-radius: 22px;
-    overflow:hidden;
+  .modal-content > img{
+    width: min(1100px, 100%);
+    height: min(92vh, 860px);
+    border-radius: 18px;
     background: rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.18);
-    box-shadow: 0 18px 60px rgba(0,0,0,.40);
-    position:relative;
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 18px 60px rgba(0,0,0,.45);
+    object-fit: contain;       /* ✅ FOTO COMPLETA */
+    object-position: center;
+    display:block;
   }
 
-  .galTopBar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding: 10px 12px;
-    color:#fff;
-    font-weight:950;
-    background: rgba(0,0,0,.22);
-  }
-  .galTopBar .hint{
-    font-weight:800;
-    opacity:.9;
-    font-size:.95rem;
-  }
-
-  .galClose{
-    width:44px; height:44px;
+  .modal-close{
+    position:absolute;
+    top: 10px;
+    right: 10px;
+    width:46px; height:46px;
     border-radius: 999px;
     border:1px solid rgba(255,255,255,.22);
     background: rgba(255,255,255,.12);
@@ -567,34 +610,7 @@
     font-weight:950;
   }
 
-  .galStage{
-    position:relative;
-    width:100%;
-    aspect-ratio: 16/10;
-    background: rgba(0,0,0,.22);
-    overflow:hidden;
-  }
-
-  .galTrack{
-    display:flex;
-    height:100%;
-    transition: transform .25s ease;
-  }
-  .galSlide{
-    min-width:100%;
-    height:100%;
-    display:grid;
-    place-items:center;
-    background: rgba(0,0,0,.35);
-  }
-  .galSlide img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    display:block;
-  }
-
-  .galNav{
+  .modal-nav{
     position:absolute;
     top:50%;
     transform: translateY(-50%);
@@ -607,29 +623,47 @@
     display:grid;
     place-items:center;
     color:#fff;
-    font-size:1.6rem;
+    font-size:1.8rem;
     font-weight:950;
   }
-  .galNav.prev{ left:12px; }
-  .galNav.next{ right:12px; }
-  @media (max-width:640px){ .galNav{ width:46px; height:46px; } }
+  .modal-nav.left{ left: 12px; }
+  .modal-nav.right{ right: 12px; }
 
-  .galDots{
-    display:flex;
-    justify-content:center;
-    gap:8px;
-    padding: 10px 12px 12px;
-    background: rgba(0,0,0,.22);
+  .modal-hint{
+    position:absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    text-align:center;
+    color: rgba(255,255,255,.85);
+    font-weight:800;
+    font-size:.95rem;
+    pointer-events:none;
   }
-  .galDot{
-    width:10px; height:10px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.55);
-    background: rgba(255,255,255,.20);
-    cursor:pointer;
-    opacity:.9;
+
+  .gallery-hidden{ display:none; }
+
+  @media (max-width: 640px){
+    .modal-content{ padding:0; }
+    .modal-content > img{
+      width:100%;
+      height:100vh;
+      border-radius: 0;
+    }
+    .modal-nav{ width:46px; height:46px; }
+    .modal-nav.left{ left: 8px; }
+    .modal-nav.right{ right: 8px; }
+    .modal-close{
+      top: 8px;
+      right: 8px;
+      width:44px;
+      height:44px;
+    }
+    .modal-hint{
+      font-size:.9rem;
+      bottom: 10px;
+    }
   }
-  .galDot.on{ background: rgba(255,255,255,.90); opacity:1; }
 </style>
 @endsection
 
@@ -663,7 +697,7 @@
   $imgLatIzq = $assetBase.'/latizquierdo.png';
   $imgDiv    = $assetBase.'/division.png';
   $imgDivC   = $assetBase.'/divisionclaro.png';
-  $imgNombre = $assetBase.'/nombre.png';
+  $imgNombre = $asMediaUrl($theme['imgNombre']) ?? $assetBase.'/nombre.png';
   $imgMisa   = $assetBase.'/misa.jpg';
   $imgRecep  = $assetBase.'/recepcion.jpg';
   $imgVest   = $assetBase.'/vestimenta.png';
@@ -767,7 +801,7 @@
         <div class="heroCard">
           <div class="kicker">XV AÑOS</div>
 
-          <img class="nameImg" src="{{ $imgNombre }}" alt="{{ $event->title ?? 'XV Años' }}">
+          <img class="nameImg" src="{{ $asMediaUrl($imgNombre) }}" alt="{{ $event->title ?? 'XV Años' }}">
 
           <img class="dividerImg" src="{{ $imgDiv }}" alt="" aria-hidden="true">
 
@@ -868,7 +902,7 @@
     {{-- ITINERARIO --}}
     <section class="sec reveal" id="itinerario">
       <h2 class="title" style="font-size:1.6rem;">Itinerario</h2>
-      <img class="dividerImg" src="{{ $imgDivC }}" alt="" aria-hidden="true">
+      <img class="dividerImg" src="{{ $imgDiv }}" alt="" aria-hidden="true">
 
       <div class="tl">
         @foreach($itinerary as $i)
@@ -891,48 +925,46 @@
       </div>
     </section>
 
-    {{-- ✅ FOTOS (1 solo botón) --}}
+    {{-- ✅ FOTOS (igual a tu HTML) --}}
     @if(!empty($galleryPhotos))
     <section class="sec reveal" id="fotos">
       <h2 class="title" style="font-size:1.6rem;">Fotos</h2>
-      <img class="dividerImg" src="{{ $imgDivC }}" alt="" aria-hidden="true">
+      <img class="dividerImg" src="{{ $imgDiv }}" alt="" aria-hidden="true">
 
-      <div class="sub">Tenemos {{ count($galleryPhotos) }} fotos para ti ✨</div>
+      <div class="sub">Toca para ver la galería completa</div>
 
-      <div class="btnRow">
-        <button class="btn gold" type="button" id="openGalleryBtn">📸 VER FOTOS</button>
+      <button id="openGalleryBtn" class="gallery-btn" type="button">
+        <span class="gallery-btn__bg"
+              id="galleryBtnBg"
+              aria-hidden="true"
+              style="background-image:url('{{ $galleryPhotos[0] }}');"></span>
+
+        <span class="gallery-btn__content">
+          <span class="gallery-btn__title" id="galleryBtnTitle">Ver fotos</span>
+          <span class="gallery-btn__meta" id="galleryBtnMeta">{{ count($galleryPhotos) }} fotos</span>
+        </span>
+      </button>
+
+      <div class="sub" style="margin-top:10px; font-weight:950;">
+        Desliza para cambiar de foto y toca fuera para cerrar.
+      </div>
+
+      <div class="gallery-hidden" aria-hidden="true">
+        @foreach($galleryPhotos as $idx => $u)
+          <img src="{{ $u }}" alt="Foto {{ $idx+1 }}" loading="lazy" class="gallery-item">
+        @endforeach
       </div>
     </section>
 
-    {{-- ✅ MODAL CARRUSEL --}}
-    <div class="galModal" id="galModal" aria-hidden="true">
-      <div class="galBackdrop" data-gal-close></div>
-      <div class="galDialog" role="dialog" aria-modal="true" aria-label="Galería de fotos">
-        <div class="galCard">
-          <div class="galTopBar">
-            <div class="hint" id="galCounter">Foto 1 de {{ count($galleryPhotos) }}</div>
-            <button class="galClose" type="button" data-gal-close aria-label="Cerrar">✕</button>
-          </div>
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
 
-          <div class="galStage" id="galStage">
-            <div class="galTrack" id="galTrack">
-              @foreach($galleryPhotos as $u)
-                <div class="galSlide">
-                  <img src="{{ $u }}" alt="Foto" loading="lazy">
-                </div>
-              @endforeach
-            </div>
-
-            <button class="galNav prev" type="button" data-gal-prev aria-label="Anterior">‹</button>
-            <button class="galNav next" type="button" data-gal-next aria-label="Siguiente">›</button>
-          </div>
-
-          <div class="galDots" id="galDots">
-            @foreach($galleryPhotos as $idx => $u)
-              <button type="button" class="galDot" data-gal-dot="{{ $idx }}" aria-label="Ir a foto {{ $idx+1 }}"></button>
-            @endforeach
-          </div>
-        </div>
+      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Vista de foto">
+        <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+        <button class="modal-nav left" id="modalPrev" aria-label="Anterior">‹</button>
+        <img id="modalImg" src="" alt="Foto ampliada">
+        <button class="modal-nav right" id="modalNext" aria-label="Siguiente">›</button>
+        <div class="modal-hint">Desliza / usa ‹ › o toca fuera para cerrar</div>
       </div>
     </div>
     @endif
@@ -1148,20 +1180,20 @@
     }
   });
 
-  // =========================================================
-  // ✅ MODAL GALERÍA (1 botón) + carrusel fullscreen
-  // =========================================================
+  // ===== GALERÍA (igual a tu HTML) =====
   (function(){
-    const photos = @json($galleryPhotos ?? []);
-    if(!photos || !photos.length) return;
+    const openBtn = document.getElementById('openGalleryBtn');
+    const modal = document.getElementById('modal');
+    const backdrop = document.getElementById('modalBackdrop');
+    const closeBtn = document.getElementById('modalClose');
+    const prevBtn = document.getElementById('modalPrev');
+    const nextBtn = document.getElementById('modalNext');
+    const modalImg = document.getElementById('modalImg');
 
-    const modal = document.getElementById('galModal');
-    const track = document.getElementById('galTrack');
-    const dotsWrap = document.getElementById('galDots');
-    const counter = document.getElementById('galCounter');
-    const stage = document.getElementById('galStage');
-    const btnOpen = document.getElementById('openGalleryBtn');
+    const items = Array.from(document.querySelectorAll('.gallery-item'));
+    if(!openBtn || !modal || !modalImg || !items.length) return;
 
+    const photos = items.map(img => img.getAttribute('src')).filter(Boolean);
     let index = 0;
     let startX = 0;
 
@@ -1170,8 +1202,12 @@
       document.body.style.overflow = on ? 'hidden' : '';
     }
 
-    function open(){
-      if(!modal) return;
+    function render(){
+      modalImg.src = photos[index];
+    }
+
+    function openAt(i){
+      index = (i + photos.length) % photos.length;
       modal.classList.add('on');
       modal.setAttribute('aria-hidden','false');
       lockScroll(true);
@@ -1179,58 +1215,36 @@
     }
 
     function close(){
-      if(!modal) return;
       modal.classList.remove('on');
       modal.setAttribute('aria-hidden','true');
       lockScroll(false);
+      modalImg.src = '';
     }
 
-    function render(){
-      if(track) track.style.transform = `translateX(${-index * 100}%)`;
-      if(counter) counter.textContent = `Foto ${index+1} de ${photos.length}`;
-      if(dotsWrap){
-        const dots = dotsWrap.querySelectorAll('.galDot');
-        dots.forEach((d,i)=> d.classList.toggle('on', i===index));
+    function next(){ openAt(index + 1); }
+    function prev(){ openAt(index - 1); }
+
+    openBtn.addEventListener('click', ()=> openAt(0));
+    backdrop?.addEventListener('click', close);
+    closeBtn?.addEventListener('click', close);
+    nextBtn?.addEventListener('click', next);
+    prevBtn?.addEventListener('click', prev);
+
+    // swipe
+    modal.addEventListener('touchstart', (e)=>{
+      startX = e.touches[0].clientX;
+    }, {passive:true});
+
+    modal.addEventListener('touchend', (e)=>{
+      const dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40){
+        dx < 0 ? next() : prev();
       }
-    }
+    }, {passive:true});
 
-    function go(i){
-      index = (i + photos.length) % photos.length;
-      render();
-    }
-    function next(){ go(index+1); }
-    function prev(){ go(index-1); }
-
-    if(btnOpen) btnOpen.addEventListener('click', ()=>{ index = 0; open(); });
-
-    modal?.querySelectorAll('[data-gal-close]').forEach(el=>{
-      el.addEventListener('click', close);
-    });
-
-    modal?.querySelector('[data-gal-next]')?.addEventListener('click', next);
-    modal?.querySelector('[data-gal-prev]')?.addEventListener('click', prev);
-
-    if(dotsWrap){
-      dotsWrap.querySelectorAll('[data-gal-dot]').forEach(d=>{
-        d.addEventListener('click', ()=>{
-          const i = parseInt(d.getAttribute('data-gal-dot') || '0', 10);
-          go(i);
-        });
-      });
-    }
-
-    if(stage){
-      stage.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; }, {passive:true});
-      stage.addEventListener('touchend', (e)=>{
-        const dx = e.changedTouches[0].clientX - startX;
-        if(Math.abs(dx) > 40){
-          dx < 0 ? next() : prev();
-        }
-      }, {passive:true});
-    }
-
+    // teclado
     document.addEventListener('keydown', (e)=>{
-      if(!modal || !modal.classList.contains('on')) return;
+      if(!modal.classList.contains('on')) return;
       if(e.key === 'Escape') close();
       if(e.key === 'ArrowRight') next();
       if(e.key === 'ArrowLeft') prev();
